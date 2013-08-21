@@ -1,5 +1,5 @@
 module IS24At
-  class SearchResult
+  class Expose
 
     #
     # Instance Methods
@@ -16,7 +16,7 @@ module IS24At
     def attributes
       @attributes
     end
-
+=begin
     def id
       @id ||= attributes['id']
     end
@@ -120,6 +120,7 @@ module IS24At
     def geocoded?
       longitude.present? && latitude.present?
     end
+=end
 
     #
     # Class methods
@@ -128,6 +129,16 @@ module IS24At
     #
     #
     #
+
+    def self.exists?(expose_id)
+      response = IS24At::Api.new.get_request("#{IS24At.config.api_version}/expose/#{expose_id}")
+      case response.code
+      when '200'
+        return true
+      when '400', '404'
+        return false
+      end
+    end
 
     #
     # Protected
